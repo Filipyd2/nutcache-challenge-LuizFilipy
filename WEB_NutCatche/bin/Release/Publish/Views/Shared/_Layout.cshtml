@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,shrink-to-fit=no">
+    <title>@ViewBag.Title - AENA BRASIL</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/vue")
+    <script src="~/Scripts/v-calendar.js"></script>
+    <script src="~/Scripts/vueCurrency.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="~/Scripts/sweetalert2.all.js"></script>
+    <script src="~/Scripts/sweetalert2.js"></script>
+    <link rel="shortcut icon" href="~/favicon.ico" />
+    <link href="~/Content/sweetalert2.css" rel="stylesheet" />
+    <link href="~/Scripts/chart/Chart.css" rel="stylesheet" />
+    <script src="~/Scripts/chart/Chart.js"></script>
+    <script src="~/Scripts/moment.js"></script>
+    <script src="~/Content/all.js"></script>
+</head>
+<body>
+    <div id="page">
+        <div class="top-row pl-4 navbar navbar-dark" style="height: auto;background-color: #1A2732;">
+            <a class="navbar-brand" href=""><img src="Dist/Imagens/aena-Brasil-dark-bg.svg" /></a>
+            <button class="navbar-toggler" @*@onclick="ToggleNavMenu"*@>
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div>
+                <h2 style="text-align:center;color:#96CE00"> Bem Vindo ao Sistema de Correspondências </h2>
+            </div>
+            <div class="top-row px-4 " id="infoAena" style="background-color: #1A2732;height: 9%;margin-right:5%">
+                <a href="https://www.aenabrasil.com.br/pt/index.html" style="color:#96CE00" target="_blank">Sobre</a>
+            </div>
+        </div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" v-if="seen" id="Nav" style="background-color:#96CE00 !important">
+            @*<a class="navbar-brand" href="#">Navbar</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>*@
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" style="font-weight:bold" href="~/Consulta">Home |</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" style="font-weight:bold" href="~/Index">Registrar Correspondência |</a>
+                    </li>
+                    @*<li class="nav-item active">
+                            <a class="nav-link" style="font-weight:bold" href="~/Resposta">Gerenciar |</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" style="font-weight:bold" href="#">Administração  |</a>
+                        </li>*@
+                  
+                </ul>
+            </div>
+        </nav>
+        <div class="row" id="side">
+            <div class="main" style="float:left">
+
+                <div class="content px-4">
+                    @RenderBody()
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+    <footer id="sticky-footer" class="pt-lg-4 bg-dark text-white-50" style="  background-color: #1A2732 !important;   height: 95px; position:absolute;   bottom: 0px;width: 100%;">
+        <div class="container text-center">
+            <div>
+                <span style="color:#96CE00">Siga-nos</span>
+                <a href="https://twitter.com/AenaBrasil" target="_blank">
+                    <span id="twitterIcon">
+                        <img src="Dist/imagens/twitter-24.ico" />
+                    </span>
+                </a>
+            </div>
+            <div style="margin-top:10px">
+                <span style="color:#96CE00">Copyright © 2020 Aena Brasil</span>
+            </div>
+        </div>
+    </footer>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

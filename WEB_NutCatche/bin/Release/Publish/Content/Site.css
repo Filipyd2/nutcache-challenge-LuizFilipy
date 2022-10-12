@@ -1,0 +1,483 @@
+﻿
+html, body {
+    font-family: 'Source Sans Pro', sans-serif !important;
+    line-height: 1 !important;
+}
+
+input, select, textarea {
+    color: black !important;
+}
+.form-control {
+    border: 1px solid #96CE00;
+}
+
+a, .btn-link {
+    color: #0366d6;
+}
+body {
+    overflow-x: hidden !important;
+}
+.content {
+    display: block;
+}
+.space{
+    margin-top: -20px !important; 
+}
+
+#Cabecalho {
+    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #1A2732 70%)
+}
+
+#Cabecalho:hover {
+   background-position: right center;
+} 
+
+
+.content::after {
+    content: "";
+    background: url('../Dist/Imagens/AENABRASIL_1280x720.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0.1;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;
+    margin-left: 5%
+}
+.visible-item {
+    display: block;
+}
+
+.hidden-item {
+    display: none;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+
+.btn-AenaGreen {
+    color: #fff;
+    background-color: #96CE00;
+    border-color: #96CE00;
+}
+
+
+.btn-AenaBlue {
+    color: white;
+    background-color: #3e5c75;
+    border-color: #3e5c75;
+}
+
+.btn-AenaBlue:hover {
+    color: white;
+    cursor:default;
+}
+
+.btn-AenaBlue:disabled {
+    opacity:1;
+}
+
+app{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.top-row {
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.highlight {
+    background-color: red !important;
+}
+
+.main {
+    flex: 1;
+}
+
+.main .top-row {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #d6d5d5;
+    justify-content: flex-end;
+}
+
+.main .top-row > a, .main .top-row .btn-link {
+      white-space: nowrap;
+      margin-left: 1.5rem;
+}
+
+        .main .top-row a:first-child {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+.sidebar {
+    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #1A2732 70%);
+}
+
+#itemConsulta:hover {
+    color: #96CE00 !important;
+}
+
+.sidebar-footer {
+    height: 50px;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    list-style-type: none;
+    padding-bottom: 5.5em;
+    margin-left: 10%;
+}
+
+.sidebar .top-row {
+    background-color: rgba(0,0,0,0.4);
+}
+
+.sidebar .navbar-brand {
+    font-size: 1.1rem;
+}
+
+.bg-Aena {
+    background-color: #96CE00 !important;
+}
+
+a.bg-Aena:hover, a.bg-Aena:focus,
+button.bg-Aena:hover,
+button.bg-Aena:focus {
+    background-color: #96CE00 !important;
+}
+
+
+.sidebar .oi {
+    width: 2rem;
+    font-size: 1.1rem;
+    vertical-align: text-top;
+    top: -2px;
+}
+
+.sidebar .nav-item {
+    font-size: 0.9rem;
+    padding-bottom: 0.5rem;
+}
+
+    .sidebar .nav-item:first-of-type {
+        padding-top: 1rem;
+    }
+
+    .sidebar .nav-item:last-of-type {
+        padding-bottom: 1rem;
+    }
+
+    .sidebar .nav-item a {
+        color: white;
+        background-color: #96CE00;
+        border-radius: 4px;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        line-height: 3rem;
+    }
+
+.nav-link {
+  padding-left:15%;
+}
+
+        .sidebar .nav-item a.active {
+            background-color: #96CE00;
+            color: white;
+        }
+
+.sidebar .nav-item a:hover {
+    color: #1A2732;
+}
+
+.content {
+    padding-top: 1.1rem;
+}
+
+.navbar-toggler {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/*.valid.modified:not([type=checkbox]) {
+    outline: 1px solid #96CE00;
+}*/
+
+.title {
+    text-align: center;
+    color: #4571ec;
+}
+
+.invalid {
+    outline: 1px solid red;
+}
+
+.validation-message {
+    color: red;
+}
+
+/*#blazor-error-ui {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }*/
+
+#legislacao input{
+    width: 30% !important;
+}
+.vc-border {
+    border: 1px solid #96CE00;
+}
+
+.vc-container {
+    border: 1px solid #96CE00;
+}
+/* Styling Checkbox Starts */
+.checkbox-label {
+    /*display: block;*/
+    position: relative;
+    margin: auto;
+    cursor: pointer;
+    font-size: 22px;
+    line-height: 24px;
+    height: 24px;
+    width: 24px;
+    clear: both;
+}
+
+    .checkbox-label input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    .checkbox-label .checkbox-custom {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        height: 24px;
+        width: 24px;
+        background-color: transparent;
+        border-radius: 5px;
+        transition: all 0.3s ease-out;
+        -webkit-transition: all 0.3s ease-out;
+        -moz-transition: all 0.3s ease-out;
+        -ms-transition: all 0.3s ease-out;
+        -o-transition: all 0.3s ease-out;
+        border: 2px solid #FFFFFF;
+    }
+
+
+    .checkbox-label input:checked ~ .checkbox-custom {
+        background-color: #1A2732;
+        border-radius: 5px;
+        -webkit-transform: rotate(0deg) scale(1);
+        -ms-transform: rotate(0deg) scale(1);
+        transform: rotate(0deg) scale(1);
+        opacity: 1;
+        border: 2px solid #FFFFFF;
+    }
+
+
+    .checkbox-label .checkbox-custom::after {
+        position: absolute;
+        content: "";
+        left: 12px;
+        top: 12px;
+        height: 0px;
+        width: 0px;
+        border-radius: 5px;
+        border: solid #96CE00;
+        border-width: 0 3px 3px 0;
+        -webkit-transform: rotate(0deg) scale(0);
+        -ms-transform: rotate(0deg) scale(0);
+        transform: rotate(0deg) scale(0);
+        opacity: 1;
+        transition: all 0.3s ease-out;
+        -webkit-transition: all 0.3s ease-out;
+        -moz-transition: all 0.3s ease-out;
+        -ms-transition: all 0.3s ease-out;
+        -o-transition: all 0.3s ease-out;
+    }
+
+
+    .checkbox-label input:checked ~ .checkbox-custom::after {
+        -webkit-transform: rotate(45deg) scale(1);
+        -ms-transform: rotate(45deg) scale(1);
+        transform: rotate(45deg) scale(1);
+        opacity: 1;
+        left: 8px;
+        top: 3px;
+        width: 6px;
+        height: 12px;
+        border: solid #96CE00;
+        border-width: 0 2px 2px 0;
+        background-color: transparent;
+        border-radius: 0;
+    }
+
+
+
+    /* For Ripple Effect */
+    .checkbox-label .checkbox-custom::before {
+        position: absolute;
+        content: "";
+        left: 10px;
+        top: 10px;
+        width: 0px;
+        height: 0px;
+        border-radius: 5px;
+        border: 2px solid #FFFFFF;
+        -webkit-transform: scale(0);
+        -ms-transform: scale(0);
+        transform: scale(0);
+    }
+
+    .checkbox-label input:checked ~ .checkbox-custom::before {
+        left: -3px;
+        top: -3px;
+        width: 24px;
+        height: 24px;
+        border-radius: 5px;
+        -webkit-transform: scale(3);
+        -ms-transform: scale(3);
+        transform: scale(3);
+        opacity: 0;
+        z-index: 999;
+        transition: all 0.3s ease-out;
+        -webkit-transition: all 0.3s ease-out;
+        -moz-transition: all 0.3s ease-out;
+        -ms-transition: all 0.3s ease-out;
+        -o-transition: all 0.3s ease-out;
+    }
+
+
+
+
+    /* Style for Circular Checkbox */
+    .checkbox-label .checkbox-custom.circular {
+        border-radius: 50%;
+        border: 2px solid #96CE00;
+    }
+
+    .checkbox-label input:checked ~ .checkbox-custom.circular {
+        background-color: #1A2732;
+        border-radius: 50%;
+        border: 2px solid #1A2732;
+    }
+
+        .checkbox-label input:checked ~ .checkbox-custom.circular::after {
+            border: solid #96CE00;
+            border-width: 0 2px 2px 0;
+        }
+
+    .checkbox-label .checkbox-custom.circular::after {
+        border-radius: 50%;
+    }
+
+    .checkbox-label .checkbox-custom.circular::before {
+        border-radius: 50%;
+        border: 2px solid #FFFFFF;
+    }
+
+    .checkbox-label input:checked ~ .checkbox-custom.circular::before {
+        border-radius: 50%;
+    }
+
+@media (max-width: 767.98px) {
+    .main .top-row:not(.auth) {
+        display: none;
+    }
+
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        display:none;
+    }
+    .sidebar a {
+            float: left;
+    }
+    .sidebar-footer {
+        display: none;
+    }
+    #infoAena {
+        display: none;
+    }
+
+    .main .top-row.auth {
+        justify-content: space-between;
+    }
+
+    .main .top-row a, .main .top-row .btn-link {
+        margin-left: 0;
+    }
+}
+
+@media (min-width: 768px) {
+    app {
+     
+        flex-direction: row;
+    }
+
+    
+    .sidebar {
+        width: 250px;
+        height: 92vh;
+        position: relative;
+        top: 0;
+    }
+
+    .main .top-row {
+        /*position: relative;*/
+        top: 0;
+    }
+
+    .main > div {
+        padding-left: 2rem !important;
+        padding-right: 1.5rem !important;
+    }
+
+    .navbar-toggler {
+        display: none;
+    }
+
+    .sidebar .collapse {
+        /* Never collapse the sidebar for wide screens */
+        display: block;
+    }
+}
+
+@media (min-width: 768px) and (max-height: 700px) {
+
+    .sidebar {
+        width: 250px;
+        position: relative;
+        height: 89vh;
+        top: 0;
+    }
+}
+

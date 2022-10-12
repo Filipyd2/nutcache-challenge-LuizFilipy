@@ -1,0 +1,287 @@
+﻿@{
+    ViewBag.Title = "Cadastro de Funcionário";
+}
+<div class="row" id="formemployee" style="line-height:1.5 !important "  >
+        <div class="col-md-1"> </div>
+        <div class="col-md-10" >
+            <button type="button" class="btn btn-AenaBlue btn-lg btn-block" id="Cabecalho">CADASTRO DE FUNCIONÁRIOS</button>
+            <div id="error">
+                <a href="~/Error" ref="error"></a>
+            </div>
+		    <div id="entrar">
+              <a href="~/Consulta" ref="enter"></a>
+			</div>
+            <div class="row " style="margin-top:10px;margin-bottom:10px" > 
+		
+                <label class="checkbox-label">
+                    <input type="radio" id="checkboxOrcamento" value="1" v-on:click="mudarTipo(1)"  v-model="employee.tipoEmployee">
+                    <span class="checkbox-custom circular" style="margin-top:15%"></span>
+                    <label for="1" style="margin-left: 30px;  margin-top: 2px;">Admissional</label>
+                </label>
+
+                <label class="checkbox-label">
+                    <input type="radio" id="checkboxOrcamento" value="2" v-on:click="mudarTipo(2)" v-model="employee.tipoEmployee">
+                    <span class="checkbox-custom circular" style="margin-top:15%"></span>
+                    <label for="2" style=" margin-left: 30px;  margin-top: 2px;">Demissional</label>
+                </label>
+            </div>
+            <div>
+
+                <div class="row" style="margin-bottom:10px">
+                    <div class="col-md-2"> </div>
+                    <div class="form-group col-md-12">
+                        <div class="col-sm-6" style="float:left;padding-left:0px;">
+                            <div>
+                                <small id="AeroportoHelp" class="form-text font-weight-bold">Nome(*)</small>
+                                <div class="form-group">
+                                    <input class="form-control" v-model="employee.nome" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6" style="float:left;padding-left:0px;padding-right:0px !important">
+                            <div class="form-group">
+                                <small id="dataCartaHelp" class="form-text font-weight-bold">Birth Date(*)</small>
+                                <v-date-picker :mode='mode' v-model='employee.birthDate' />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2"> </div>
+                </div>
+                <div class="row space">
+                    <div class="col-md-2"> </div>
+                    <div class="form-group col-md-12">
+                        <div class="col-sm-6" style="float:left;padding-left:0px;">
+                            <small id="nCartaHelp" class="form-text font-weight-bold">Gender(*)</small>
+                            <select v-model="employee.gender" class="form-control" placeholder="Selecione um Genero">
+                                <option value="M">Masculino</option>
+                                <option value="F">Feminino</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-sm-6" style="float:left;padding-left:0px;padding-right:0px !important">
+                            <small id="AssuntoHelp" class="form-text font-weight-bold">Email(*)</small>
+                            <div class="form-group">
+                                <input class="form-control" v-model="employee.email" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2"> </div>
+                </div>
+                <div class="row space">
+                    <div class="col-md-2"> </div>
+                    <div class="form-group col-md-12">
+                        <div class="col-sm-6" style="float:left;padding-left:0px;">
+                            <small id="dataCartaHelp" class="form-text font-weight-bold">CPF(*)</small>
+                            <input class="form-control" v-model="employee.CPF" />
+                        </div>
+                        <div class="col-sm-6" style="float:left;padding-left:0px;padding-right:0px !important">
+                            <div class="form-group">
+                                <small id="dataCartaHelp" class="form-text font-weight-bold">Start Date(*)</small>
+                                <v-date-picker :mode='mode' v-model='employee.startDate' />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2"> </div>
+                </div>
+                <div class="row space">
+                    <div class="col-md-2"> </div>
+                    <div class="form-group col-md-12">
+                        *<div  class="col-sm-6" style="float:left;padding-left:0px;">
+                            <small id="FormaEnvio" class="form-text font-weight-bold">Team</small>
+                            <select v-model="employee.formaEnvio" class="form-control" placeholder="Selecione o time">
+                                <option value="None"></option>
+                                <option value="FrontEnd">FrontEnd</option>
+                                <option value="BackEnd">BackEnd</option>
+                                <option value="Mobile">Mobile</option>
+                                <option value="FullStack">FullStack</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="col-md-2"> </div>
+                </div>
+                <div class="row space">
+                    <div class="col-md-2"> </div>
+                    <div class="form-group col-md-12">
+                        <small id="ObservacaoHelp" class="form-text font-weight-bold">Observação</small>
+                        <textarea class="form-control" rows="2" v-model="employee.descricao" id="Observacao" placeholder="Insira sua Observação"></textarea>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="form-group col-md-12" v-if="employee.tipoEmployee == '2'">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="checkboxOrcamento" checked v-on:click="aprovacao($event)">
+                            <span class="checkbox-custom circular" style="margin-top:15%"></span>
+                        </label>
+                        <label style="margin-left: 30px;  margin-top: 2px;">Necessita de Aprovação do gestor?</label>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="form-group col-md-12" id="Botoes">
+                        <div v-if="employee.tipoEmployee == 1">
+
+                            <div class="col-sm-7" style="float:left;padding-left:0px;">
+                                <input type="file" style="float:left;cursor:pointer" class="btn btn-AenaGreen" accept=".pdf" v-on:change="processarArquivo($event)">
+                                <div style="float:left">
+                                    <h5 style="color:#3e5c75;float:right;margin-top:5px">O formato do arquivo precisa ser um PDF!</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-5" style="float:left;padding-left:0px;">
+                            <button type="button" style="width:140px;margin-right:5px" v-if="botao" class="btn btn-AenaGreen">SALVAR</button>
+                            <button type="button" style="width:140px" v-if="botao" v-on:click="limpar" class="btn btn-danger">LIMPAR</button>
+                        </div>
+                    </div>
+                    <div class="col-md-2"> </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+            </div>
+            <script>
+                var Demandas = new Vue({
+                    el: '#formemployee',
+                    data:
+                    {
+                        employee: {
+                            idEmployee: 0,
+                            name: 0,
+                            birthDate: null,
+                            gender: null,
+                            email: null,
+                            CPF: null,
+                            startDate: null,
+                            Team: null,
+                            caminhoDocumento: null,
+                            descricao: null,
+                            assunto: null,
+                            idAcesso: 1,
+                            file: null,
+                            idemployeeRelacionada: null
+
+                        },
+                        usuario: null,
+                        arquivo: null,
+                        mode: "single",
+                        idAcesso: 0,
+                        botao: true,
+                        hiddenEmissor: false,
+                        hiddenDestinatario: false,
+                        entradas: []
+
+                    },
+                    created: function () {
+                        
+                    },
+                    methods:
+                    {
+                        processarArquivo(event) {
+                            this.arquivo = event.target.files[0]
+                            this.employee.caminhoDocumento = event.target.files[0].name;
+                        },  
+                      
+                        aprovacao(e) {
+                            if (e.target.checked)
+                            {
+                                this.employee.status = 0;
+                            } else {
+                                this.employee.status = 5;
+                            }
+                        }, mudarTipo(value) {
+                            this.employee.status = 0;
+                              if (value == 1) {
+                                    this.hiddenEmissor = false;
+                                    this.hiddenDestinatario = true;
+                                    this.employee.idEmissor = 0;
+
+                                } else {
+                                    this.hiddenEmissor = true;
+                                    this.hiddenDestinatario = false;
+                                    this.employee.idDestinatario = 0;
+
+                                }
+                        },
+       //                 enviar() {
+       //                     this.botao = false;
+       //                     var self = this;
+							//if (self.employee.prazoResposta == null){
+							//   self.employee.prazoResposta = 0 ;
+							//}
+       //                     var mDados = self.employee;
+       //                     var xDados = JSON.stringify(this.employee);
+       //                     var ok = new Blob([this.arquivo], { type: 'application/pdf' });
+       //                     var formData = new FormData();
+       //                     formData.append('data', xDados);                            
+       //                     formData.append('data2', ok, self.employee.caminhoDocumento);
+       //                     if (self.employee.tipoEmployee == 1 && self.arquivo == null) {
+       //                         Swal.fire('Por favor preencha todos os campos necessários!', '', 'warning')
+       //                         this.botao = true;
+       //                     }
+       //                     else
+       //                     {  
+       //                         if (this.employee.tipoEmployee == 0 || this.employee.idEmissor == 0 || this.employee.assunto == null || this.employee.idDestinatario == 0 || this.employee.dataCarta == null) {
+       //                             Swal.fire('Por favor preencha todos os campos necessários!', '', 'warning')
+       //                             this.botao = true;
+       //                         }
+       //                         else {
+       //                             axios({
+       //                                 method: 'post',
+       //                                 url: 'InserirEmployee',
+       //                                 //data: {
+       //                                 //    entrada: this.employee
+       //                                 //},                
+       //                                 data: formData,
+       //                                 headers: {
+       //                                     'Content-Type': 'multipart/form-data'
+       //                                 },
+       //                                 validateStatus: (status) => {
+       //                                     return true;
+       //                                 },
+       //                                 responseType: 'json'
+       //                             }).then((response) => {
+       //                                 if (response.data == 0 || response.data == undefined || response.data == "") {
+       //                                     Swal.fire('Ocorreu um erro no cadastro!', '', 'error')
+       //                                     self.botao = true;
+       //                                 } else {
+       //                                     //Swal.fire(response.data,
+       //                                     //    'Foi enviado um email para o setor administrativo do sistema!',
+       //                                     //    'success')
+
+       //                                     Swal.fire('Cadastro de Employee realizado com sucesso!', 'Foi enviado um email para a area associada ao Email', 'success')
+							//						.then((result) => {
+							//						   self.$refs.enter.click();
+							//						})
+       //                                     self.botao = true;
+                                             
+
+       //                                 }
+       //                             }).catch((error) => {
+       //                                 console.log(error);
+       //                             });
+       //                         }
+       //                     }               
+       //                 },
+                        limpar() {
+                            this.employee.idEmployee = 0,
+                            this.employee.tipoEmployee = 0,
+                            this.employee.dataCarta = null,
+                            this.employee.idEmissor = 0,
+                            this.employee.numeroOficio = null,
+                            this.employee.idDestinatario = 0,
+                            this.employee.prazoResposta = null,
+                            this.employee.formaEnvio = null,
+                            this.employee.caminhoDocumento = null,
+                            this.employee.observacao= null,
+                            this.employee.assunto= null
+                                
+                        }
+                    }
+                });
+            </script>
+            <style>
+
+            </style>

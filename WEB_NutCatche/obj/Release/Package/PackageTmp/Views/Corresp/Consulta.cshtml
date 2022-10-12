@@ -1,0 +1,448 @@
+﻿@{
+    ViewBag.Title = "Caixa de Correspondências";
+}
+<div class="row" id="formConsulta">
+    <div class="col-sm-12" id="tabelaConsulta" style="min-height:800px;padding-left:5px !important;">
+        <div v-if="usuario">
+            <button type="button" class="btn btn-AenaBlue btn-lg btn-block" id="Cabecalho">Olá {{usuario.loginRede}}, Grupo {{usuario.areaDescricao}} </button>
+        </div>
+        <div id="error">
+            <a href="~/Error" ref="error"></a>
+        </div>
+        <div class="row" style="margin-top:15px">
+            <div class="form-group col-sm-12">
+                
+
+                @*<div class="row" style="margin-top:5px" v-if="mostrarFiltro">
+                    <div>
+                        <input type="text" class="form-control" style="width:300px;margin-left:20px" v-model="filtro2" placeholder="Filtro2">
+                        <select class="form-control" v-model="tipoFiltro" style="width: 70PX;margin-left: 10PX; padding-right: 0px;">
+                            <option value="1"> E </option>
+                            <option value="2"> OU </option>
+                        </select>
+                    </div>
+
+                </div>*@
+                
+                      
+                
+
+
+                <div class="table-responsive" style="margin-top:10px;overflow-x: hidden !important">
+                    <h2 style="color:#96CE00;text-align:center;margin-bottom:20px"> Caixa de Correspondências</h2>
+                    <div class="row" style="margin-bottom:20px">
+                        @*<span v-on:click="showFiltro()"> <i style="color: #96ce00;margin-top: 10px; margin-left: 20px;width:24px;height:24px; cursor:pointer" class="fas fa-align-justify"></i></span>*@
+                        <select v-model="tipoFiltro" style="width:300px;margin-left:20px" class="form-control">
+                            <option value="0" selected>Todos</option>
+                            <option value="1">Aguardando Resposta</option>
+                            <option value="2">Responder</option>
+                            <option value="3">Aprovado pelo Jurídico</option>
+                            <option value="4">Não necessita de Aprovação</option>
+                            <option value="5">Cancelado</option>
+                            <option value="6">Dados Anteriores ao Sistema</option>
+                        </select>
+                        <input type="text" class="form-control" style="width:300px;margin-left:5px" v-model="filtro1" placeholder="Filtro(opcional)">
+                        <span v-on:click="buscarCorrespFiltro()"><i style="color: #96ce00;margin-top: 10px; margin-left: 10px;width:24px;height:24px; cursor:pointer" class="fas fa-search"></i></span>
+                    </div>
+                    <div class="row" style="float:right;margin-bottom:10px;margin-right:30px">
+                        <div class="col-sm-12">
+                            <i style="color: #96ce00;margin-left: 10px;width:20px;margin-top:2px;height:20px;float:left;display:block" class="fas fa-hourglass-half"> </i> Aguardando Resposta!
+                            <i style="color: red;margin-left: 10px;width:20px;height:20px;" class="fas fa-exclamation-circle"> </i> Responder!
+                            <i style="color: #96ce00;margin-left: 10px;width:20px;height:20px;" class="fas fa-check-circle"> </i> Aprovado pelo Jurídico!
+                            <i style="color: #3e5c75;margin-left: 10px;margin-top:2px;width:20px;height:20px;" class="fas fa-check-circle"> </i> Não necessita de Aprovação!
+                            <i style="color: red;margin-left: 5px;margin-top:2px;width:20px;height:20px;" class="fas fa-times-circle"> </i> Cancelado!
+                            <i style="color: #96ce00;margin-left: 5px;margin-top:2px;width:20px;height:20px;" class="fas fa-history"> </i> Dados Anteriores ao Sistema!
+                        </div>
+                    </div>
+                    <table id="tabelaConsultas" class="table table-bordered" style="border-radius: 5px;font-size:80%;border: #96CE00">
+                        <thead>
+                            <tr style="text-align: center; background-color: #96CE00">
+                                <th scope="col">Sequencial da Carta</th>
+                                <th scope="col">Data da Carta</th>
+                                <th scope="col">Tipo</th>
+                                <th scope="col">Assunto</th>
+                                <th scope="col">Número Ofício</th>
+                                <th scope="col">Orgão da Correspondência</th>
+                                <th scope="col">Prazo Resposta</th>
+                                <th scope="col">Estimativa de Resposta</th>
+                                <th scope="col">Data da Aprovação</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="itemConsulta" v-for="item in filtered" style="background-color: white; cursor: pointer" v-on:click="expandirInfo(item)">
+                                <td style="text-align:center;" v-bind:style="{'color' : verificarData(item.dataCarta,item.prazoResposta)}">
+                                    {{item.sequencialCarta}}
+                                </td>
+                                <td style="text-align:center;" v-bind:style="{'color' : verificarData(item.dataCarta,item.prazoResposta)}"> {{tempo(item.dataCarta)}} </td>
+                                <td style="text-align:center;" v-bind:style="{'color' : verificarData(item.dataCarta,item.prazoResposta)}"> {{tipo(item.tipoCorrespondencia)}} </td>
+                                <td style="text-align:center;" v-bind:style="{'color' : verificarData(item.dataCarta,item.prazoResposta)}"> {{item.assunto}} </td>
+                                <td style="text-align:center;" v-bind:style="{'color' : verificarData(item.dataCarta,item.prazoResposta)}"> {{item.numeroOficio}} </td>
+                                <td style="text-align:center;" v-bind:style="{'color' : verificarData(item.dataCarta,item.prazoResposta)}"> {{item.razaoSocial}} </td>
+                                <td style="text-align:center;" v-bind:style="{'color' : verificarData(item.dataCarta,item.prazoResposta)}"> {{verificarResposta(item.prazoResposta)}} </td>
+                                <td style="text-align:center;" v-bind:style="{'color' : verificarData(item.dataCarta,item.prazoResposta)}"> {{estimativa(item.dataCarta,item.prazoResposta)}} </td>
+                                <td style="text-align:center;" v-bind:style="{'color' : verificarData(item.dataCarta,item.prazoResposta)}"> {{dataFinal(item.dataFinal)}} </td>
+                                <td style="text-align:center;" v-bind:style="{'color' : verificarData(item.dataCarta,item.prazoResposta)}"> <span v-html="statusIcon(item.status,usuario.idArea,item.tipoCorrespondencia)"></span></td>
+                                @*<td style="text-align:center;" v-bind:style="{'color' : verificarData(item.dataCarta,item.prazoResposta)}"> <span class="fa fa-hourglass-half"></span> {{status(item.status,usuario.idArea,item.tipoCorrespondencia)}} </td>*@
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="page-navigation" v-if="dados.length">
+                    <button class="btn btn-AenaGreen" v-on:click="movePages(-1)" style="float:left">Anterior</button>
+                    <p style="float:left;margin-left:10px;margin-top:5px">{{startRow / rowsPerPage + 1}} de {{Math.ceil(dados.length / rowsPerPage)}}</p>
+                    <button class="btn btn-AenaGreen" v-on:click="movePages(1)" style="float:left;margin-left:10px">Próximo</button>
+                    <button class="btn btn-AenaBlue" v-on:click="csvExport(csvData)" style="float:right;margin-left:10px">GERAR EXCEL</button>
+                    <button class="btn btn-AenaGreen" v-on:click="novaCarta" style="float:right;margin-left:10px;cursor:pointer">NOVA CARTA</button>
+                </div>
+                <div v-else>
+                    <h2 style="color:#96CE00;   text-align: center">Nenhuma Correspondência Encontrada!!</h2>
+                    <button class="btn btn-AenaGreen" v-on:click="novaCarta" style="float:right;margin-left:10px;cursor:pointer">NOVA CARTA</button>
+                </div>
+                <div id="entrar">
+                    <a href="~/Index" ref="enter"></a>
+                </div>
+
+                <div class="col-sm-12" id="infoConsulta" v-if="selecionado">
+                    <div class="row space">
+                        <div class="col-md-2"> </div>
+                        <div class="form-group col-md-8">
+                            <div class="card text-white bg-Aena mb-3" style="margin-top:25px">
+                                <div class="card-header">{{"Correspondência Nº:  " + selecionado.idCorrespondencia}}</div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Conteúdo</h5>
+                                    <p class="card-text">{{"Assunto:  " + selecionado.assunto}}</p>
+                                    <p class="card-text"> {{"Emissor: " + selecionado.razaoSocial}}</p>
+                                    <p class="card-text">{{"Email: " + selecionado.emailEmissor}}</p>
+                                    <p class="card-text">{{"Documento: "+ selecionado.caminhoDocumento}}</p>
+                                    <p class="card-text">{{"Numero Oficio: "+ selecionado.numeroOficio}}<p>
+                                    <p class="card-text">{{"Data Carta: "+ tempo(selecionado.dataCarta)}}</p>
+                                    <p class="card-text">{{"Data Cadastro: "+ tempo(selecionado.dataCadastro)}}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <button type="button" style="margin-top:40px" v-on:click="limpar" class="btn btn-danger">Responder</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    var Demandas = new Vue({
+        el: '#formConsulta',
+        data: {
+            entrada: null,
+            dados: [],
+            startRow: 0,
+            rowsPerPage: 10,
+            numeroDemanda: null,
+            pageNumber: 0,
+            selecionado: null,
+            active_el: 0,
+            texto: null,
+            usuario: null,
+            expirou: false,
+            filtro2: null,
+            filtro1: null,
+            mostrarFiltro: false,
+            tipoFiltro: 0
+    
+        },
+        created: function ()
+        {
+             var self = this
+            axios({
+                method: 'get',
+                url: 'BuscarUsuario',
+                data: {},
+                validateStatus: (status) => {
+                    return true;
+                },
+                responseType: 'json'
+            }).then((response) => {
+                if (response.data != null){
+                      self.usuario = response.data;
+                      self.buscarCorresp();
+
+                }
+				else {
+                    self.$refs.error.click();
+                }
+
+            }).catch((error) => {
+                console.log(error);
+            });
+
+        },
+
+        computed: {
+            filtered: function ()
+            {
+                return this.dados.slice(this.startRow, this.startRow + 10)
+            },
+
+            csvData() {
+                return this.dados.map(item => ({
+                    ...item,
+                    dataCadastro: item.dataCadastro != null ? moment(item.dataCadastro).format('DD/MM/YYYY HH:mm:ss') :"  SEM DATA",
+                    dataCarta: item.dataCarta ? moment(item.dataCarta).format('DD/MM/YYYY HH:mm:ss'): "   SEM DATA",
+                    status: this.status(item.status),
+                    tipoCorrespondencia: this.tipo(item.tipoCorrespondencia)
+                  }));
+            }
+         },
+          methods: {
+                buscarCorresp: function(){
+                    axios({
+                            method: 'post',
+                            url: 'BuscarCorresp',
+                            data: {idAcesso : this.usuario.idAcesso},
+                            validateStatus: (status) => {
+                                return true;
+                            },
+                            responseType: 'json'
+                        }).then((response) => {
+
+                            this.dados = response.data;
+                        }).catch((error) => {
+                            console.log(error);
+                        });
+                },
+
+                buscarCorrespFiltro: function(){
+                    axios({
+                            method: 'post',
+                            url: 'BuscarCorrespFiltro',
+                            data: {idAcesso :parseInt(this.usuario.idAcesso),valor1: this.filtro1, valor2: this.filtro2,tipp: parseInt(this.tipoFiltro)},
+                            validateStatus: (status) => {
+                                return true;
+                            },
+                            responseType: 'json'
+                        }).then((response) => {
+
+                            this.dados = response.data;
+                        }).catch((error) => {
+                            console.log(error);
+                        });
+                },
+                activate:function(el){
+                    this.active_el = el;
+                },
+                expandirInfo(item) {
+                    window.location.href = "Resposta?id=" + item.idCorrespondencia;
+                    //this.selecionado = item;
+                },
+                movePages: function (amount)
+                {
+                    var newStartRow = this.startRow + (amount * this.rowsPerPage);
+                    if (newStartRow >= 0 && newStartRow < this.dados.length)
+                    {
+                        this.startRow = newStartRow;
+                    }
+                },
+                novaCarta() {
+                    this.$refs.enter.click()
+                },
+                tempo: function (data)
+                {
+                    return moment(data).format('DD/MM/YYYY')
+              },
+              estimativa: function (data, value)
+			  {
+
+					if( value > 0)
+					{
+					  var day = moment(data).add(value, 'days').startOf('day');
+					  return moment(day).format('DD/MM/YYYY')
+					} 
+					  
+				  
+              },
+              showFiltro(){
+                  this.mostrarFiltro = !this.mostrarFiltro;
+
+                   if (this.mostrarFiltro == false)
+                    {
+                        this.filtro2 = null;
+                    }
+              },
+              dataFinal: function (data) {
+                  if (data == null || data == undefined) {
+                      return ""
+                  } else {
+                      return moment(data).format('DD/MM/YYYY')
+                  }
+              },
+                verificarData: function(data,value)
+                {
+                    var day = moment(data).add(value, 'days').startOf('day');
+                    var limit = moment(day).subtract(1, 'days').startOf('day');
+                    if (value == 0 || value == undefined){
+                        return 'black';
+                    }else
+                    {
+                        if (moment().isAfter(day)){
+                            return 'black';
+                        }
+                        else if(moment().isAfter(limit) && moment().isBefore(day))
+                        {
+                            return 'black';
+                        }else
+                        {
+                            return 'black';
+                        }
+                    }
+                },
+				verificarResposta(item)
+				{
+				  if(item > 0){
+					return item + " dias" ;
+				  }
+				},
+                status: function (valor,area,tipo)
+                {
+				
+						switch (valor) {
+                            case 0:
+                                if (tipo == 1)
+								{
+                                    return 'CADASTRADO!';
+                                } else {
+                                    if (area == 17) {
+                                        return 'AGUARDANDO RESPOSTA!';
+                                        break;
+                                    } else {
+                                        return 'RESPONDER!';
+                                        break;
+                                    }
+                                }
+							 
+                            case 1:
+                                if (tipo == 1) {
+                                    if (area == 17) {
+                                        return 'VERIFICAR RESPOSTA!';
+                                        break;
+                                    } else {
+                                        return 'RESPONDIDO!';
+                                        break;
+                                    }
+                                } else {
+                                    if (area == 17) {
+                                        return 'VERIFICAR RESPOSTA!';
+                                        break;
+                                    } else {
+                                        return 'AGUARDANDO APROVAÇÃO!';
+                                        break;
+                                    }
+                                }
+							case 2:
+								return 'APROVADO!';
+								break;
+							 case 3:
+								return 'MIGRAÇÃO!';
+                                break;
+                            case 4:
+                                return 'CANCELADO!';
+                                break;
+						}
+			
+              },
+
+              statusIcon: function (valor, area, tipo)
+              {
+
+                  switch (valor) {
+                      case 0:
+                          if (tipo == 1)
+                          {
+                              return '<span style="color: #3e5c75;margin-left: 10px;width:24px;height:24px; cursor:pointer" class="fas fa-check-circle"></span>';
+                              //return 'fas fa-check-circle';
+                              break;
+                          } else
+                          {
+                              if (area == 17)
+                              {
+                                  return '<span style="color: #96ce00;margin-left: 10px;width:24px;height:24px; cursor:pointer" class="fas fa-hourglass-half"></span>';
+                                 // return 'fas fa-hourglass-half';
+                                  break;
+                              } else {
+                                  return '<span style="color: red;margin-left: 10px;width:24px;height:24px; cursor:pointer" class="fas fa-exclamation-circle"></span>';
+                                //  return 'fas fa-exclamation-circle';
+                                  break;
+                              }
+                          }
+
+                      case 1:
+                          if (tipo == 1) {
+                              if (area == 17) {
+                                  return '<span style="color: red;margin-left: 10px;width:24px;height:24px; cursor:pointer" class="fas fa-exclamation-circle"></span>';
+                               //   return 'fas fa-exclamation-circle';
+                                  break;
+                              } else {
+                                  return '<span style="color: #96ce00;margin-left: 10px;width:24px;height:24px; cursor:pointer" class="fas fa-hourglass-half"></span>';
+                                //  return 'fas fa-hourglass-half';
+                                  break;
+                              }
+                          } else {
+                              if (area == 17) {
+                                  return '<span style="color: red;margin-left: 10px;width:24px;height:24px; cursor:pointer" class="fas fa-exclamation-circle"></span>';
+                                  break;
+                              } else {
+                                  return '<span style="color: #96ce00;margin-left: 10px;width:24px;height:24px; cursor:pointer" class="fas fa-hourglass-half"></span>';
+                                  break;
+                              }
+                          }
+                      case 2:
+                          return '<span style="color: #96ce00;margin-left: 10px;width:24px;height:24px; cursor:pointer" class="fas fa-check"></span>';
+                          break;
+                      case 3:
+                          return '<span style="color: #96ce00;margin-left: 10px;width:24px;height:24px; cursor:pointer" class="fas fa-history"></span>';
+                          break;
+                      case 4:
+                          return '<span style="color: red;margin-left: 10px;width:24px;height:24px; cursor:pointer" class="fas fa-times-circle"></span>';;
+                          break;
+                      case 5:
+                          return '<span style="color: #3e5c75;margin-left: 10px;width:24px;height:24px; cursor:pointer" class="fas fa-check"></span>';;
+                          break;
+                  }
+
+              },
+
+              tipo: function (tipo) {
+                  switch (tipo) {
+                      case 1:
+                          return 'ENTRADA';
+                          break;
+                      case 2:
+                          return 'SAÍDA';
+                          break;
+                  }
+              },
+                csvExport(arrData) {
+                  var csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+                  csvContent += [
+                    Object.keys(arrData[0]).join(";"),
+                    ...arrData.map(item => Object.values(item).join(";"))
+                  ]
+                    .join("\n")
+                    .replace(/(^\[)|(\]$)/gm, "");
+                  const data = encodeURI(csvContent);
+                  const link = document.createElement("a");
+                  link.setAttribute("href", data);
+                  link.setAttribute("download", "dadosCorresp.csv");
+                  link.click();
+                }
+            },
+        });
+</script>
+<style>
+    #sticky-footer {
+        position: relative !important;
+    }
+</style>

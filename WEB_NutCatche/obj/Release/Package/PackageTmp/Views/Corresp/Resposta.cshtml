@@ -1,0 +1,467 @@
+﻿@{
+    ViewBag.Title = "DOCGO - Detalhes";
+}
+<div class="row" id="formDemandas">
+    <div class="col-md-1"> </div>
+    <div class="col-md-10" style="min-height:800px" v-if="item">
+        <button type="button" class="btn btn-AenaBlue btn-lg btn-block" id="Cabecalho">Detalhes</button>
+        <div id="error">
+            <a href="~/Error" ref="error"></a>
+        </div>
+        <input type="hidden" id="customInput" value="@ViewBag.idCorresp" />
+        <div id="entrar">
+            <a href="~/Consulta" ref="enter"></a>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+
+            </div>
+
+            <div class="form-group col-md-8">
+
+                <div class="card text-white bg-Aena mb-3" style="margin-top:25px">
+                    <div class="card-header" style="text-align:center;font-size: 23px;font-weight: bold;"> {{"Correspondência Nº " + item.sequencialCarta}}</div>
+                    <div class="card-body">
+                        <div v-if="(item.status == 0  && item.tipoCorrespondencia == 2  && usuario.idArea == 17)">
+                            <h5 style="color:black;">Status: Aguardando Resposta!</h5>
+                        </div>
+                        <div v-if="(item.status == 1   && item.tipoCorrespondencia == 2  && usuario.idArea == 17)">
+                            <h5 style="color:black;">Status: Verificar Resposta!</h5>
+                        </div>
+                        <div v-if="(item.status == 0 && item.tipoCorrespondencia == 2 && usuario.idArea != 17)">
+                            <h5 style="color:black;">Status: Responder!</h5>
+                        </div>
+
+                        <div v-if="(item.status == 2 && item.tipoCorrespondencia == 2)">
+                            <h5 style="color:black;">Status: APROVADO!</h5>
+                        </div>
+                        <div v-if="(item.status == 4 && item.tipoCorrespondencia == 2)">
+                            <h5 style="color:black;">Status: Cancelado!</h5>
+
+                        </div>
+
+                        <div v-if="(item.tipoCorrespondencia == 1 &&  item.status !== 3 && item.status == 0 )">
+                            <h5 style="color:black;">Para responder cadastre uma correspondência de Saída!</h5>
+                        </div>
+                        <div v-if="(item.tipoCorrespondencia == 1 &&  item.status !== 3 && item.status != 0)">
+                            <h5 style="color:black;">Respondido, verifique o link da correspondência de Saída Abaixo!</h5>
+                        </div>
+                        <div v-if="(item.status == 3)">
+                            <h5 style="color:black;">Status: Dados de Migração, Apenas para consulta!</h5>
+                        </div>
+
+
+                        <div v-if="item.tipoCorrespondencia == 2">
+                            <h5 class="card-title"> {{"Tipo: Saída"}}</h5>
+                        </div>
+                        <div v-else>
+                            <h5 class="card-title"> {{"Tipo: Entrada" }}</h5>
+                        </div>
+                        <h5 class="card-title">{{"Assunto:  " + item.assunto}}</h5>
+
+                        <div v-if="item.tipoCorrespondencia == '1'" style="margin-bottom:10px">
+                            <p class="card-text"> {{"Emissor: " + item.razaoSocial}}</p>
+                            @*<p class="card-text">{{"EmailEmissor: " + item.emailEmissor}}</p>*@
+                            <p class="card-text">{{"Destinatario: " + item.nomeArea}}</p>
+                            @*<p class="card-text">{{"EmailDestinatario: " + item.emailDestinatario}}</p>*@
+                        </div>
+                        <div v-else style="margin-bottom:10px">
+                            <p class="card-text"> {{"Emissor: " + item.nomeArea}}</p>
+                            @*<p class="card-text">{{"EmailEmissor: " + item.emailEmissor}}</p>*@
+                            <p class="card-text">{{"Destinatario: " + item.razaoSocial}}</p>
+                            @*<p class="card-text">{{"EmailDestinatario: " + item.emailDestinatario}}</p>*@
+                        </div>
+                        <p class="card-text"> {{"Quem cadastrou: " + item.nomeUsuario}}</p>
+                        <div v-if="item.tipoCorrespondencia == 1">
+                            <p class="card-text" style="float:left;margin-right:5px">{{"Documento: "}}<p> <span style="color:#3e5c75;cursor:pointer;text-decoration:underline" v-on:click="arquivoLink(item.caminhoDocumento)"> {{arquivoNome(item.caminhoDocumento)}}</span>
+                        </div>
+                        <div v-if="item.numeroOficio">
+                            <p class="card-text">{{"Numero Oficio: "+ item.numeroOficio}}<p>
+                        </div>
+
+                        <p class="card-text">{{"Data Carta: "+ tempo(item.dataCarta)}}</p>
+                        <p class="card-text">{{"Descrição: "+ item.descricao}}</p>
+                        <p class="card-text">{{"Data Cadastro: "+ tempo(item.dataCadastro)}}</p>
+                        <div v-if="item.idCorrespRelacionada" style="margin-top:10px">
+                            <div v-if="item.tipoCorrespondencia == 1">
+                                <span>
+                                    Resposta em :<a :href="pageLink(item.idCorrespRelacionada)" class="card-text">{{ item.sequencialRelacionado  + " : " + item.assuntoRelacionado}}</a>
+                                </span>
+                            </div>
+                            <div v-else>
+                                <span>
+                                    Resposta à Carta :<a :href="pageLink(item.idCorrespRelacionada)" class="card-text">{{ item.sequencialRelacionado  + " : " + item.assuntoRelacionado }}</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div v-if="(item.status == 2 && item.tipoCorrespondencia == 2)">
+                    <img style="width:100%;margin-top:10px" src="~/Dist/Imagens/aprovado.png" />
+                </div>
+
+                <div v-if="(item.status == 4 && item.tipoCorrespondencia == 2)">
+                    <img style="width:100%;margin-top:10px" src="~/Dist/Imagens/cancelado.png" />
+                </div>
+
+                <div v-if="((item.status == 0 && item.tipoCorrespondencia == 2 && usuario.idGrupoAcesso > 1) || (item.status == 1 && item.tipoCorrespondencia == 2 && usuario.idGrupoAcesso == 1)) ">
+                    <img style="width:80%;margin-top:10px" src="~/Dist/Imagens/tempo.png" />
+                </div>
+                <div v-if="((item.status == 0 && item.tipoCorrespondencia == 2 && usuario.idGrupoAcesso == 1) || (item.status == 1 && item.tipoCorrespondencia == 2 && usuario.idGrupoAcesso > 1)) ">
+                    <img style="width:80%;margin-top:10px" src="~/Dist/Imagens/atencao.png" />
+                </div>
+            </div>
+        </div>
+        <div v-for="obs in item.observacoes">
+            <div class="row">
+                <div class="col-md-2"> </div>
+                <div class="form-group col-md-8">
+                    <span> {{"Respondido por: " + obs.usuario + " no dia " + tempoHora(obs.dataObservacao)}}</span>
+                    <textarea class="form-control" disabled rows="2" type="text">{{ obs.texto}} </textarea>
+                    @*<input type="text" class="form-control" v-model="tempo(obs.dataObservacao)" />*@
+                    <div style="margin-top:5px;font-size:18px" v-if="arquivoNome(obs.documento) != undefined ">
+                        <p class="card-text" style="float:left;margin-right:5px">{{"Documento: "}}<p>
+                            <span style="color:blue;cursor:pointer;text-decoration:underline" v-on:click="arquivoLink(obs.documento)"> {{" " +arquivoNome(obs.documento)}}</span>
+                            @*<img v-bind:src="obs.documento"/>*@
+                    </div>
+                    @*<input type="text" class="form-control" v-model="obs.documento" disabled />*@
+                </div>
+                <div class="col-md-2">
+
+                </div>
+            </div>
+
+        </div>
+        <div v-if="(item.status == 0) || (item.status == 1 &&  usuario.idArea == 17)">
+            <div class="row">
+                <div class="col-md-2"> </div>
+                <div class="form-group col-md-8">
+                    <button type="button" style="float:left;margin-right:5px" v-if="encaminhar" class="btn btn-AenaBlue">Encaminhar</button>
+                    <input type="file" style="float:right;cursor:pointer" class="btn btn-AenaGreen" accept=".pdf" v-on:change="processarArquivo($event)">
+
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+
+            <div class="row space">
+                <div class="col-md-2"> </div>
+                <div class="form-group col-md-8">
+                    <h5 style="color:#3e5c75;float:right;margin-top:5px">O formato do arquivo precisa ser um PDF!</h5>
+                    <h5 style="color:#3e5c75;margin-top:5px">Observação</h5>
+                    <textarea class="form-control" rows="4" id="Justificativa" v-model="observacao" placeholder="Insira a Observação da correspondência"></textarea>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="form-group col-md-9" id="Botoes">
+                    <button type="button" v-on:click="enviar" style="float:left;margin-right:5px" v-if="botao" class="btn btn-AenaGreen">RESPONDER</button>
+                    <div v-if="item.tipoCorrespondencia == 2">
+                        <div v-if="(usuario.idArea == 17 && usuario.idGrupoAcesso == 3)" style="float:left;margin-right:5px;">
+                            <button type="button" v-if="botao" v-on:click="finalizar"  style="cursor:pointer" class="btn btn-AenaBlue">APROVAR</button>
+                        </div>
+                     
+                    </div>
+					<div>
+                       <button type="button" v-if="botao" v-on:click="cancelar" class="btn btn-danger">CANCELAR</button>
+                    </div>
+                </div>
+                <div class="col-md-2"> </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+
+</div>
+<script>
+    var Demandas = new Vue({
+        el: '#formDemandas',
+        data: {
+            item: null,
+            mode: "single",
+            idCorresp: null,
+            observacao: null,
+            documento: null,
+            usuario: null,
+            encaminhar: false,
+            arquivo: null,
+            file: [],
+            botao: true
+
+        },
+        created: function () {
+            this.idCorresp = document.getElementById('customInput').value;
+
+            var self = this
+            axios({
+                method: 'get',
+                url: 'BuscarUsuario',
+                data: {},
+                validateStatus: (status) => {
+                    return true;
+                },
+                responseType: 'json'
+            }).then((response) => {
+                if (response.data != null) {
+                    self.usuario = response.data;
+                    this.buscarCorresp();
+                } else {
+                    self.$refs.error.click();
+                }
+
+            }).catch((error) => {
+                console.log(error);
+            });
+        },
+        computed: {
+            isDisabled(value) {
+                return value
+            }
+        },
+        mounted: function () {
+            
+ 
+        },
+        methods:
+        {
+            enviar() {
+
+                Swal.fire({
+                    title: 'Responder',
+                    text: "Voce deseja realmente responder a correspondência " + this.item.sequencialCarta + "?",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#96CE00',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Confirmar!',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.value) {
+                        var self = this;
+                        //if (this.arquivo == null) {
+                        //    Swal.fire('Por favor preencha todos os campos necessários!', '', 'warning')
+                        //} else {
+                            self.botao = false;
+                            var mDados = { idCorrespondencia: parseInt(this.idCorresp), texto: this.observacao, documento: this.documento, idAcesso: this.usuario.idAcesso };
+                            var xDados = JSON.stringify(mDados);
+                            var ok = new Blob([this.arquivo], { type: 'application/pdf' });
+                            var formData = new FormData();
+                            formData.append('data', xDados);
+                            formData.append('data2', ok, self.documento);
+                            axios({
+                                method: 'post',
+                                url: 'ResponderCorrespondencia',
+                                data: formData,
+                                headers: {
+                                    'Content-Type': 'multipart/form-data'
+                                },
+                                validateStatus: (status) => {
+                                    return true;
+                                },
+                                responseType: 'json'
+                            }).then((response) => {
+                                if (response.data == 0 || response.data == undefined || response.data == "") {
+                                    Swal.fire('Ocorreu um erro na resposta!',
+                                        '',
+                                        'error')
+                                    self.botao = true;
+                                } else {
+
+
+                                    Swal.fire('Cadastro da resposta realizado com sucesso!',
+                                        'Foi enviado um email para o setor administrativo do sistema!',
+                                        'success').then((result) => {
+                                            if (result.value) {
+                                                this.$refs.enter.click();
+                                            }
+                                        })
+                                    self.botao = true;
+
+                                }
+                            }).catch((error) => {
+                                console.log(error);
+                            });
+                        }
+
+                    //}
+                })
+                    
+            },
+            buscarCorresp() {
+                axios({
+                    method: 'post',
+                    url: 'BuscarCorrespID',
+                    data: { entrada: parseInt(this.idCorresp), idAcesso: parseInt(this.usuario.idAcesso) },
+                    validateStatus: (status) => {
+                        return true;
+                    },
+                    responseType: 'json'
+                }).then((response) => {
+                    this.item = response.data;
+                }).catch((error) => {
+                    console.log(error);
+                });
+
+            },
+            finalizar() {
+
+                Swal.fire({
+                    title: 'Aprovar?',
+                    text: "Você realmente deseja aprovar a correspondência " + this.item.sequencialCarta + "?",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#96CE00',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Confirmar!',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.value) {
+                        axios({
+                            method: 'post',
+                            url: 'FinalizarCorrespondencia',
+                            data: { idCorresp: parseInt(this.idCorresp),idAcesso : parseInt(this.usuario.idAcesso) },
+                            validateStatus: (status) => {
+                                return true;
+                            },
+                            responseType: 'json'
+                        }).then((response) => {
+                            if (response.data == 0 || response.data == undefined || response.data == "") {
+                                Swal.fire('Ocorreu um erro na resposta!',
+                                    '',
+                                    'error')
+                            } else {
+                                Swal.fire('Correspondência aprovada com sucesso!',
+                                    '',
+                                    'success').then((result) => {
+                                        if (result.value) {
+                                            this.$refs.enter.click();
+                                        }
+                                    })
+
+                            }
+                        }).catch((error) => {
+                            console.log(error);
+                        });
+                    }
+                })
+
+            },
+            cancelar() {
+
+                Swal.fire({
+                    title: 'Cancelamento',
+                    text: "Você realmente deseja cancelar a correspondência " + this.item.sequencialCarta + "?",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#96CE00',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Confirmar!',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.value) {
+                        self.botao = false;
+                        var mDados = { idCorrespondencia: parseInt(this.idCorresp), texto: this.observacao, documento: this.documento, idAcesso: this.usuario.idAcesso };
+                        var xDados = JSON.stringify(mDados);
+                        var formData = new FormData();
+                        formData.append('data', xDados);
+                        axios({
+                            method: 'post',
+                            url: 'CancelarCorrespondencia',
+                            data: formData,
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            },
+                            validateStatus: (status) => {
+                                return true;
+                            },
+                            responseType: 'json'
+                        }).then((response) => {
+                            if (response.data == 0 || response.data == undefined || response.data == "") {
+                                Swal.fire('Ocorreu um erro na resposta!',
+                                    '',
+                                    'error')
+                                self.botao = true;
+                            } else {
+
+
+                                Swal.fire('Correspondência cancelada com sucesso!',
+                                    '',
+                                    'success').then((result) => {
+                                        if (result.value) {
+                                            this.$refs.enter.click();
+                                        }
+                                    })
+                                self.botao = true;
+
+                            }
+                        }).catch((error) => {
+                            console.log(error);
+                        });
+
+                    }
+                })
+
+            },
+
+            processarArquivo(event) {
+                this.arquivo = event.target.files[0]
+                this.documento = event.target.files[0].name;
+            },
+            tempo: function (data) {
+                return moment(data).format('DD/MM/YYYY')
+            },
+            tempoHora: function (data) {
+                return moment(data).format('DD/MM/YYYY') + " às " + moment(data).format('HH:mm')
+            },
+            arquivoNome(data) {
+                if (data !== null && data !== undefined) {
+                    var array = data.split('\\');
+                    return array[array.length - 1];
+                }
+            },
+            pageLink(data) {
+                if (data !== null && data !== undefined) {
+                    return "Resposta?id=" + data;
+                }
+            },
+            arquivoLink(data) {
+                var self = this;
+                var nome = self.arquivoNome(data);
+                axios({
+                    method: 'post',
+                    url: 'DownloadFile',
+                    data: { arquivo: data },
+                    validateStatus: (status) => {
+                        return true;
+                    },
+                    responseType: 'arraybuffer'
+                }).then(function (response) {
+                    let blob = new Blob([response.data], { type: 'application/pdf' })
+                    let link = document.createElement('a')
+                    link.href = window.URL.createObjectURL(blob)
+                    link.download = nome
+                    link.click()
+                })
+
+
+            },
+            status: function (valor) {
+                switch (valor) {
+                    case 1:
+                        return 'ENTRADA';
+                        break;
+                    case 2:
+                        return 'SAÍDA';
+                        break;
+                }
+            },
+        }
+    });
+</script>
+<style>
+    #sticky-footer {
+        position: relative !important;
+    }
+</style>

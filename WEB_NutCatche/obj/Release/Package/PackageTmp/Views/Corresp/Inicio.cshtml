@@ -1,0 +1,111 @@
+﻿@{
+    ViewBag.Title = "PAGINA INICIAL";
+}
+<div class="row" id="formDemandas">
+    <div class="col-md-2"> </div>
+    <div class="col-md-8">
+    
+        <button type="button" class="btn btn-AenaBlue btn-lg btn-block" id="Cabecalho">ACESSO</button>
+        <div class="row" style="margin-top:20px">
+            <div class="col-md-2"> </div>
+            <div class="form-group col-md-8">
+                <div class="form-group">
+                    <input class="form-control" v-model="login" placeholder="LOGIN" autofocus />
+                </div>
+                <div class="form-group">
+                    <input class="form-control" v-model="senha"  type="password" placeholder="SENHA" />
+                </div>
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="form-group col-md-4" id="Botoes">
+                        <button type="button"  v-on:click="autenticar(login,senha)" class="btn btn-AenaGreen" >ENTRAR</button>
+                        <button type="button" v-on:click="abrirInfo" class="btn btn-secondary">AJUDA</button>
+                    </div>
+                    <div class="col-md-4"> </div>
+                </div>
+                <div id="entrar" v-if="seen">
+                    <a href="~/Consulta" ref="enter"></a>
+                </div>
+            </div>
+            <div class="col-md-2"> </div>
+        </div>
+        @*<ul class="nav flex-column">
+            <li class="nav-item px-3" style="margin-left:5%">
+                <a class="nav-link" href="~/Index" ac="NavLinkMatch.All" style="margin-bottom:10px;">
+                    Demandas
+                    <a href="~/Views/Demandas/Inicio.cshtml">~/Views/Demandas/Inicio.cshtml</a>
+                </a>
+                <a class="nav-link" href="http://10.5.17.93:8080/" ac="NavLinkMatch.All" style="margin-bottom:10px;">
+                    Solicitações Infraero
+                </a>
+            </li>
+        </ul>*@
+    </div>
+    <div class="col-md-2"></div>
+
+</div>
+<script >
+
+  
+
+    var Acesso = new Vue({
+        el: '#formDemandas',
+        data: {
+            login: null,
+            seen: true,
+                senha: null
+        },
+      
+        
+            methods: {
+                autenticar:function(login,senha){
+                    axios({
+                        method: 'post',
+                        url: 'AutenticarUsuario',
+                        data: { login : login, senha : senha },
+                        validateStatus: (status) => {
+                            return true;
+                        },
+                        responseType: 'json'
+                    }).then((response) => {
+                        if (response.data == -1) {
+                            Swal.fire('Erro ao Logar',
+                                'Usuario não autorizado, Clique em Ajuda para solicitar o acesso!',
+                                'error')
+                            
+                        } else if (response.data == 0)
+                        {
+                            Swal.fire('Erro ao Logar',
+                                'Login ou senha incorretos,tente Novamente!',
+                                'error')
+                        } else {
+                            this.autenticado = response.data;
+                            this.$refs.enter.click()
+                        }
+                    }).catch((error) => {
+                        console.log(error);
+                    });
+                },
+                abrirInfo: function () {
+                    Swal.fire('Solicitar o acesso',
+                        'Prezado Usuario,por favor envie um email solicitando o acesso para DTIC.SISTEMAS@AENABRASIL.COM.BR!',
+                        'warning')
+                }
+            },
+    });
+
+    //Vue.mixin({
+    //    data: function () {
+    //        return {
+    //            autenticado: null
+    //        }
+    //    }
+    //})
+
+    var NavBar = new Vue({
+        el: '#Nav',
+        data: {
+            seen: false
+        },
+    });
+</script>
